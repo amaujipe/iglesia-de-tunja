@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Iglesia de Tunja — Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #FAFCFE; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+
+const COLORS = {
+  sky: "#2B8CC4",
+  skyLight: "#E8F4FD",
+  skyMuted: "#A8D4ED",
+  green: "#3A8F5C",
+  greenLight: "#E6F5EC",
+  gold: "#D4A843",
+  goldLight: "#FDF6E3",
+  dark: "#1C2B3A",
+  darkMuted: "#3D5066",
+  text: "#2C3E50",
+  textLight: "#6B7C8D",
+  bg: "#FAFCFE",
+  white: "#FFFFFF",
+  warmGray: "#F5F3F0",
+  border: "#E2E8F0",
+};
+
+const ChurchLogo = ({ size = 48 }) => (
+  <svg width={size} height={size * 1.15} viewBox="0 0 100 115" fill="none">
+    <circle cx="50" cy="62" r="42" fill={COLORS.sky} />
+    <path d="M10 72 Q50 58 90 72 Q50 86 10 72Z" fill={COLORS.gold} />
+    <path d="M10 72 Q50 86 90 72 L90 104 Q50 90 10 104Z" fill={COLORS.green} />
+    <rect x="45" y="8" width="10" height="70" rx="2" fill={COLORS.dark} opacity="0.85" />
+    <rect x="30" y="28" width="40" height="10" rx="2" fill={COLORS.dark} opacity="0.85" />
+  </svg>
+);
+
+const WhatsAppIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+);
+
+const MapPinIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+  </svg>
+);
+
+const ClockIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+  </svg>
+);
+
+const ChevronDown = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="6 9 12 15 18 9"/>
+  </svg>
+);
+
+const MenuIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+  </svg>
+);
+
+const CloseIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+  </svg>
+);
+
+const CrossDecor = ({ style }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={COLORS.skyMuted} strokeWidth="1.5" style={{ opacity: 0.3, ...style }}>
+    <line x1="12" y1="2" x2="12" y2="22"/><line x1="5" y1="9" x2="19" y2="9"/>
+  </svg>
+);
+
+// Photo placeholder component
+const PhotoPlaceholder = ({ label, aspect = "4/3", className = "" }) => (
+  <div style={{
+    aspectRatio: aspect,
+    background: `linear-gradient(135deg, ${COLORS.skyLight} 0%, ${COLORS.greenLight} 100%)`,
+    borderRadius: 12,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+    border: `2px dashed ${COLORS.border}`,
+    ...( className === "hero" ? { borderRadius: 0, border: "none" } : {}),
+  }}>
+    <span style={{ color: COLORS.textLight, fontSize: 14, textAlign: "center", fontFamily: "'DM Sans', sans-serif" }}>
+      {label}
+    </span>
+  </div>
+);
+
+// FAQ Accordion
+const FAQItem = ({ question, answer, isOpen, onClick }) => (
+  <div style={{
+    borderBottom: `1px solid ${COLORS.border}`,
+    overflow: "hidden",
+  }}>
+    <button
+      onClick={onClick}
+      style={{
+        width: "100%",
+        padding: "20px 0",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        background: "none",
+        border: "none",
+        cursor: "pointer",
+        textAlign: "left",
+        gap: 16,
+      }}
+    >
+      <span style={{
+        fontFamily: "'Merriweather', serif",
+        fontSize: 17,
+        color: isOpen ? COLORS.sky : COLORS.dark,
+        fontWeight: 600,
+        lineHeight: 1.4,
+      }}>
+        {question}
+      </span>
+      <span style={{
+        transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+        transition: "transform 0.3s ease",
+        flexShrink: 0,
+        color: COLORS.sky,
+      }}>
+        <ChevronDown />
+      </span>
+    </button>
+    <div style={{
+      maxHeight: isOpen ? 300 : 0,
+      opacity: isOpen ? 1 : 0,
+      transition: "all 0.3s ease",
+      overflow: "hidden",
+    }}>
+      <p style={{
+        padding: "0 0 20px 0",
+        margin: 0,
+        fontFamily: "'DM Sans', sans-serif",
+        fontSize: 15,
+        lineHeight: 1.7,
+        color: COLORS.textLight,
+      }}>
+        {answer}
+      </p>
+    </div>
+  </div>
+);
+
+// Testimony card
+const TestimonyCard = ({ name, text }) => (
+  <div style={{
+    background: COLORS.white,
+    borderRadius: 16,
+    padding: "28px 24px",
+    boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
+    border: `1px solid ${COLORS.border}`,
+    flex: "1 1 280px",
+    minWidth: 250,
+  }}>
+    <p style={{
+      fontFamily: "'Merriweather', serif",
+      fontSize: 15,
+      lineHeight: 1.7,
+      color: COLORS.text,
+      margin: "0 0 16px 0",
+      fontStyle: "italic",
+    }}>
+      "{text}"
+    </p>
+    <span style={{
+      fontFamily: "'DM Sans', sans-serif",
+      fontSize: 13,
+      color: COLORS.sky,
+      fontWeight: 600,
+      letterSpacing: 0.3,
+    }}>
+      — {name}
+    </span>
+  </div>
+);
+
+// Activity card
+const ActivityCard = ({ icon, title, schedule, description }) => (
+  <div style={{
+    background: COLORS.white,
+    borderRadius: 16,
+    padding: 24,
+    boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
+    border: `1px solid ${COLORS.border}`,
+    flex: "1 1 280px",
+    minWidth: 250,
+  }}>
+    <div style={{ fontSize: 28, marginBottom: 12 }}>{icon}</div>
+    <h4 style={{
+      fontFamily: "'Merriweather', serif",
+      fontSize: 17,
+      color: COLORS.dark,
+      margin: "0 0 6px 0",
+    }}>{title}</h4>
+    <p style={{
+      fontFamily: "'DM Sans', sans-serif",
+      fontSize: 13,
+      color: COLORS.sky,
+      fontWeight: 600,
+      margin: "0 0 10px 0",
+    }}>{schedule}</p>
+    <p style={{
+      fontFamily: "'DM Sans', sans-serif",
+      fontSize: 14,
+      color: COLORS.textLight,
+      margin: 0,
+      lineHeight: 1.6,
+    }}>{description}</p>
+  </div>
+);
+
+// Belief card
+const BeliefCard = ({ title, text, accent }) => (
+  <div style={{
+    padding: "28px 24px",
+    borderRadius: 16,
+    background: COLORS.white,
+    boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
+    flex: "1 1 280px",
+    minWidth: 250,
+  }}>
+    <h4 style={{
+      fontFamily: "'Merriweather', serif",
+      fontSize: 17,
+      color: COLORS.dark,
+      margin: "0 0 10px 0",
+    }}>{title}</h4>
+    <p style={{
+      fontFamily: "'DM Sans', sans-serif",
+      fontSize: 14,
+      color: COLORS.textLight,
+      margin: 0,
+      lineHeight: 1.7,
+    }}>{text}</p>
+  </div>
+);
+
+function App() {
+  const [mobileMenu, setMobileMenu] = useState(false);
+  const [openFAQ, setOpenFAQ] = useState(0);
+  const [activeSection, setActiveSection] = useState("inicio");
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  const scrollTo = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    setMobileMenu(false);
+  };
+
+  const navItems = [
+    { id: "inicio", label: "Inicio" },
+    { id: "visita", label: "Tu primera visita" },
+    { id: "comunidad", label: "Comunidad" },
+    { id: "creemos", label: "Lo que creemos" },
+    { id: "reuniones", label: "Reuniones" },
+    { id: "contacto", label: "Contacto" },
+  ];
+
+  const faqItems = [
+    {
+      q: "¿Cómo es un servicio dominical?",
+      a: "Empezamos con un tiempo de música y alabanza, luego hay un mensaje basado en la Biblia, y terminamos con un momento de oración. Todo dura aproximadamente una hora y media. Es un ambiente cálido y cercano.",
+    },
+    {
+      q: "¿Qué hago cuando llegue? ¿A quién me dirijo?",
+      a: "Cuando entres, alguien del equipo de bienvenida te va a recibir con una sonrisa. Te puede acompañar a un asiento y orientarte sobre lo que va a pasar. No tienes que buscar a nadie ni saber nada de antemano.",
+    },
+    {
+      q: "¿Tengo que participar en algo?",
+      a: "No. Puedes simplemente sentarte y escuchar. Nadie te va a pedir que hagas algo con lo que no te sientas cómodo. No te vamos a pedir que te presentes frente a todos ni nada parecido.",
+    },
+    {
+      q: "¿Puedo ir solo/a?",
+      a: "Por supuesto. Muchas personas llegan solas la primera vez. Alguien del equipo de bienvenida te va a saludar y te puede acompañar a un asiento si lo deseas.",
+    },
+    {
+      q: "¿Puedo ir con niños?",
+      a: "Sí, los niños son bienvenidos. Tenemos actividades especiales para ellos durante parte del servicio, para que puedan aprender y divertirse a su nivel.",
+    },
+    {
+      q: "¿Necesito llevar algo?",
+      a: "Nada en absoluto. Si quieres traer una Biblia, genial. Si no tienes, no te preocupes. Y la ofrenda es completamente voluntaria, nunca se presiona a nadie.",
+    },
+  ];
+
+  return (
+    <div style={{ fontFamily: "'DM Sans', sans-serif", color: COLORS.text, background: COLORS.bg, minHeight: "100vh" }}>
+
+      {/* ═══════ NAVIGATION ═══════ */}
+      <nav style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        background: "rgba(250,252,254,0.92)",
+        backdropFilter: "blur(12px)",
+        borderBottom: `1px solid ${COLORS.border}`,
+        zIndex: 1000,
+        padding: "0 24px",
+      }}>
+        <div style={{
+          maxWidth: 1100,
+          margin: "0 auto",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          height: 64,
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer" }} onClick={() => scrollTo("inicio")}>
+            <ChurchLogo size={28} />
+            <span style={{
+              fontFamily: "'Merriweather', serif",
+              fontWeight: 700,
+              fontSize: 16,
+              color: COLORS.dark,
+            }}>Iglesia de Tunja</span>
+          </div>
+
+          {/* Desktop nav */}
+          {!isMobile && (
+            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              {navItems.map(item => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollTo(item.id)}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    padding: "8px 14px",
+                    cursor: "pointer",
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: COLORS.textLight,
+                    fontFamily: "'DM Sans', sans-serif",
+                    borderRadius: 8,
+                    transition: "all 0.2s",
+                  }}
+                  onMouseEnter={e => { e.target.style.color = COLORS.sky; e.target.style.background = COLORS.skyLight; }}
+                  onMouseLeave={e => { e.target.style.color = COLORS.textLight; e.target.style.background = "none"; }}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Mobile menu button */}
+          {isMobile && (
+            <button
+              onClick={() => setMobileMenu(!mobileMenu)}
+              style={{ background: "none", border: "none", cursor: "pointer", color: COLORS.dark, padding: 8 }}
+            >
+              {mobileMenu ? <CloseIcon /> : <MenuIcon />}
+            </button>
+          )}
+        </div>
+
+        {/* Mobile menu dropdown */}
+        {isMobile && mobileMenu && (
+          <div style={{
+            position: "absolute",
+            top: 64,
+            left: 0,
+            right: 0,
+            background: COLORS.white,
+            borderBottom: `1px solid ${COLORS.border}`,
+            padding: "12px 24px 20px",
+            boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
+          }}>
+            {navItems.map(item => (
+              <button
+                key={item.id}
+                onClick={() => scrollTo(item.id)}
+                style={{
+                  display: "block",
+                  width: "100%",
+                  textAlign: "left",
+                  background: "none",
+                  border: "none",
+                  padding: "14px 0",
+                  cursor: "pointer",
+                  fontSize: 16,
+                  fontWeight: 500,
+                  color: COLORS.dark,
+                  fontFamily: "'DM Sans', sans-serif",
+                  borderBottom: `1px solid ${COLORS.border}`,
+                }}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        )}
+      </nav>
+
+      {/* ═══════ HERO ═══════ */}
+      <section id="inicio" style={{
+        paddingTop: 64,
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        position: "relative",
+        overflow: "hidden",
+        background: `linear-gradient(170deg, ${COLORS.bg} 0%, ${COLORS.skyLight} 50%, ${COLORS.greenLight} 100%)`,
+      }}>
+        {/* Decorative circle */}
+        <div style={{
+          position: "absolute",
+          right: "-10%",
+          top: "10%",
+          width: "50vw",
+          height: "50vw",
+          maxWidth: 600,
+          maxHeight: 600,
+          borderRadius: "50%",
+          background: `radial-gradient(circle, ${COLORS.skyLight} 0%, transparent 70%)`,
+          opacity: 0.5,
+        }} />
+
+        <div style={{
+          maxWidth: 1100,
+          margin: "0 auto",
+          padding: isMobile ? "80px 24px 60px" : "60px 24px",
+          position: "relative",
+          zIndex: 1,
+          display: "flex",
+          flexDirection: isMobile ? "column" : "row",
+          alignItems: "center",
+          gap: isMobile ? 40 : 60,
+        }}>
+          <div style={{ flex: "1 1 55%" }}>
+            <div style={{
+              display: "inline-block",
+              background: COLORS.goldLight,
+              padding: "6px 16px",
+              borderRadius: 100,
+              marginBottom: 24,
+            }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: COLORS.gold, letterSpacing: 0.5 }}>
+                Iglesia cristiana evangélica en Tunja
+              </span>
+            </div>
+
+            <h1 style={{
+              fontFamily: "'Merriweather', serif",
+              fontSize: isMobile ? 32 : 44,
+              lineHeight: 1.2,
+              color: COLORS.dark,
+              margin: "0 0 20px 0",
+              fontWeight: 700,
+            }}>
+              Un lugar donde puedes aprender de Dios, sin presión, y caminar acompañado.
+            </h1>
+
+            <p style={{
+              fontSize: isMobile ? 16 : 18,
+              lineHeight: 1.7,
+              color: COLORS.textLight,
+              margin: "0 0 36px 0",
+              maxWidth: 520,
+            }}>
+              Somos una iglesia cristiana que cree en la Biblia, se preocupa por las personas y vive la fe en comunidad.
+            </p>
+
+            <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: 12 }}>
+              <button
+                onClick={() => scrollTo("reuniones")}
+                style={{
+                  background: COLORS.sky,
+                  color: COLORS.white,
+                  border: "none",
+                  padding: "16px 32px",
+                  borderRadius: 12,
+                  fontSize: 16,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  fontFamily: "'DM Sans', sans-serif",
+                  boxShadow: `0 4px 16px ${COLORS.sky}40`,
+                  transition: "transform 0.2s",
+                }}
+                onMouseEnter={e => e.target.style.transform = "translateY(-2px)"}
+                onMouseLeave={e => e.target.style.transform = "translateY(0)"}
+              >
+                Te esperamos este domingo
+              </button>
+              <button
+                onClick={() => scrollTo("visita")}
+                style={{
+                  background: "transparent",
+                  color: COLORS.sky,
+                  border: `2px solid ${COLORS.sky}`,
+                  padding: "14px 28px",
+                  borderRadius: 12,
+                  fontSize: 15,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  fontFamily: "'DM Sans', sans-serif",
+                  transition: "all 0.2s",
+                }}
+                onMouseEnter={e => { e.target.style.background = COLORS.skyLight; }}
+                onMouseLeave={e => { e.target.style.background = "transparent"; }}
+              >
+                ¿Es tu primera vez?
+              </button>
+            </div>
+          </div>
+
+          <div style={{ flex: "1 1 40%", width: "100%" }}>
+            <PhotoPlaceholder
+              label="📷 Foto real de la comunidad reunida — la imagen principal del sitio"
+              aspect="4/5"
+              className="hero"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════ QUÉ ESPERAR ═══════ */}
+      <section id="visita" style={{
+        padding: isMobile ? "80px 24px" : "100px 24px",
+        background: COLORS.white,
+      }}>
+        <div style={{ maxWidth: 720, margin: "0 auto" }}>
+          <p style={{
+            fontSize: 13,
+            fontWeight: 600,
+            color: COLORS.sky,
+            letterSpacing: 1.5,
+            textTransform: "uppercase",
+            margin: "0 0 12px 0",
+          }}>Tu primera visita</p>
+
+          <h2 style={{
+            fontFamily: "'Merriweather', serif",
+            fontSize: isMobile ? 28 : 36,
+            color: COLORS.dark,
+            margin: "0 0 12px 0",
+            lineHeight: 1.25,
+          }}>
+            ¿Qué puedes esperar si nos visitas?
+          </h2>
+
+          <p style={{
+            fontSize: 16,
+            color: COLORS.textLight,
+            lineHeight: 1.7,
+            margin: "0 0 48px 0",
+            maxWidth: 540,
+          }}>
+            Sabemos que ir a una iglesia por primera vez puede generar dudas. Aquí respondemos las más comunes con total honestidad.
+          </p>
+
+          <div>
+            {faqItems.map((item, i) => (
+              <FAQItem
+                key={i}
+                question={item.q}
+                answer={item.a}
+                isOpen={openFAQ === i}
+                onClick={() => setOpenFAQ(openFAQ === i ? -1 : i)}
+              />
+            ))}
+          </div>
+
+          <div style={{
+            marginTop: 40,
+            padding: 24,
+            background: COLORS.goldLight,
+            borderRadius: 16,
+            textAlign: "center",
+          }}>
+            <p style={{
+              fontFamily: "'Merriweather', serif",
+              fontSize: 16,
+              color: COLORS.dark,
+              margin: "0 0 8px 0",
+              fontStyle: "italic",
+            }}>
+              "No tienes que saber nada. No tienes que traer nada. Ven tal como estás."
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════ COMUNIDAD ═══════ */}
+      <section id="comunidad" style={{
+        padding: isMobile ? "80px 24px" : "100px 24px",
+        background: COLORS.warmGray,
+      }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", maxWidth: 600, margin: "0 auto 60px" }}>
+            <p style={{
+              fontSize: 13,
+              fontWeight: 600,
+              color: COLORS.green,
+              letterSpacing: 1.5,
+              textTransform: "uppercase",
+              margin: "0 0 12px 0",
+            }}>Nuestra comunidad</p>
+
+            <h2 style={{
+              fontFamily: "'Merriweather', serif",
+              fontSize: isMobile ? 28 : 36,
+              color: COLORS.dark,
+              margin: "0 0 16px 0",
+              lineHeight: 1.25,
+            }}>
+              No somos perfectos. Somos personas aprendiendo a seguir a Jesús juntas.
+            </h2>
+
+            <p style={{
+              fontSize: 16,
+              color: COLORS.textLight,
+              lineHeight: 1.7,
+              margin: 0,
+            }}>
+              Familias, jóvenes, adultos mayores, estudiantes, trabajadores... personas de todas las edades y caminos de vida que encontraron aquí un lugar para crecer juntos.
+            </p>
+          </div>
+
+          {/* Photo grid */}
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr",
+            gap: 16,
+            marginBottom: 48,
+          }}>
+            <PhotoPlaceholder label="📷 Foto: familias de la iglesia" aspect="4/3" />
+            <PhotoPlaceholder label="📷 Foto: jóvenes en actividad" aspect="4/3" />
+            <PhotoPlaceholder label="📷 Foto: momento del servicio dominical" aspect="4/3" />
+          </div>
+
+          {/* Testimonies */}
+          <h3 style={{
+            fontFamily: "'Merriweather', serif",
+            fontSize: 20,
+            color: COLORS.dark,
+            margin: "0 0 24px 0",
+            textAlign: "center",
+          }}>Lo que dicen las personas</h3>
+
+          <div style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 16,
+          }}>
+            <TestimonyCard
+              name="María"
+              text="Llegué sin conocer a nadie y hoy tengo una familia aquí."
+            />
+            <TestimonyCard
+              name="Carlos"
+              text="Pensé que me iban a juzgar, pero encontré exactamente lo contrario."
+            />
+            <TestimonyCard
+              name="Andrea"
+              text="Mis hijos esperan con emoción cada domingo. Eso dice mucho."
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════ LO QUE CREEMOS ═══════ */}
+      <section id="creemos" style={{
+        padding: isMobile ? "80px 24px" : "100px 24px",
+        background: COLORS.white,
+      }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", maxWidth: 600, margin: "0 auto 48px" }}>
+            <p style={{
+              fontSize: 13,
+              fontWeight: 600,
+              color: COLORS.gold,
+              letterSpacing: 1.5,
+              textTransform: "uppercase",
+              margin: "0 0 12px 0",
+            }}>Lo que creemos</p>
+
+            <h2 style={{
+              fontFamily: "'Merriweather', serif",
+              fontSize: isMobile ? 28 : 36,
+              color: COLORS.dark,
+              margin: "0 0 16px 0",
+              lineHeight: 1.25,
+            }}>
+              Creemos en un Dios que ama, acompaña y transforma
+            </h2>
+
+            <p style={{
+              fontSize: 16,
+              color: COLORS.textLight,
+              lineHeight: 1.7,
+              margin: 0,
+            }}>
+              No necesitas entender todo para ser parte. Nuestra fe se resume en estas convicciones que compartimos como comunidad.
+            </p>
+          </div>
+
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 16 }}>
+            <BeliefCard
+              accent={COLORS.sky}
+              title="Dios Padre, Hijo y Espíritu Santo"
+              text="Creemos en un solo Dios que se revela como Padre que nos creó, como Hijo (Jesús) que vino a mostrarnos su amor, y como Espíritu Santo que nos acompaña cada día."
+            />
+            <BeliefCard
+              accent={COLORS.green}
+              title="La Biblia"
+              text="Creemos que la Biblia es la Palabra de Dios y la guía para nuestra vida. Intentamos leerla, entenderla y aplicarla juntos, sin complicaciones."
+            />
+            <BeliefCard
+              accent={COLORS.gold}
+              title="La Gracia"
+              text="Creemos que la salvación es un regalo de Dios, no algo que se gana. No importa quién eres o de dónde vienes: el amor de Dios es para todos."
+            />
+            <BeliefCard
+              accent={COLORS.sky}
+              title="La Comunidad"
+              text="Creemos que la fe se vive mejor acompañados. No fuimos diseñados para caminar solos, sino para cuidarnos, apoyarnos y crecer juntos."
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════ REUNIONES ═══════ */}
+      <section id="reuniones" style={{
+        padding: isMobile ? "80px 24px" : "100px 24px",
+        background: COLORS.warmGray,
+      }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", maxWidth: 600, margin: "0 auto 48px" }}>
+            <p style={{
+              fontSize: 13,
+              fontWeight: 600,
+              color: COLORS.sky,
+              letterSpacing: 1.5,
+              textTransform: "uppercase",
+              margin: "0 0 12px 0",
+            }}>Reuniones y actividades</p>
+
+            <h2 style={{
+              fontFamily: "'Merriweather', serif",
+              fontSize: isMobile ? 28 : 36,
+              color: COLORS.dark,
+              margin: "0 0 16px 0",
+              lineHeight: 1.25,
+            }}>
+              Espacios para crecer juntos, a tu ritmo
+            </h2>
+          </div>
+
+          {/* Main service highlight */}
+          <div style={{
+            background: COLORS.white,
+            borderRadius: 20,
+            padding: isMobile ? 24 : 40,
+            marginBottom: 24,
+            border: `2px solid ${COLORS.sky}20`,
+            boxShadow: `0 4px 24px ${COLORS.sky}10`,
+          }}>
+            <div style={{
+              display: "flex",
+              flexDirection: isMobile ? "column" : "row",
+              alignItems: isMobile ? "flex-start" : "center",
+              gap: 24,
+            }}>
+              <div style={{ flex: 1 }}>
+                <h3 style={{
+                  fontFamily: "'Merriweather', serif",
+                  fontSize: 22,
+                  color: COLORS.dark,
+                  margin: "0 0 8px 0",
+                }}>Servicio Dominical</h3>
+                <p style={{
+                  fontSize: 15,
+                  color: COLORS.textLight,
+                  margin: "0 0 16px 0",
+                  lineHeight: 1.6,
+                }}>
+                  Nuestro encuentro principal de la semana. Un momento para aprender, adorar y compartir en comunidad.
+                </p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 16 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, color: COLORS.sky }}>
+                    <ClockIcon />
+                    <span style={{ fontSize: 14, fontWeight: 600 }}>Domingos — [horario]</span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, color: COLORS.green }}>
+                    <MapPinIcon />
+                    <span style={{ fontSize: 14, fontWeight: 600 }}>Tunja, Boyacá</span>
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={() => scrollTo("contacto")}
+                style={{
+                  background: COLORS.sky,
+                  color: COLORS.white,
+                  border: "none",
+                  padding: "14px 28px",
+                  borderRadius: 12,
+                  fontSize: 15,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  fontFamily: "'DM Sans', sans-serif",
+                  whiteSpace: "nowrap",
+                  flexShrink: 0,
+                }}
+              >
+                Cómo llegar
+              </button>
+            </div>
+          </div>
+
+          {/* Other activities */}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 16 }}>
+            <ActivityCard
+              icon="👧🏻"
+              title="Jóvenes y niños"
+              schedule="[Día y hora]"
+              description="Actividades diseñadas para que los más jóvenes aprendan, se diviertan y crezcan en su fe junto a otros de su edad."
+            />
+            <ActivityCard
+              icon="🤝"
+              title="Acompañamiento pastoral"
+              schedule="Agenda una conversación"
+              description="Si necesitas hablar con alguien, nuestro equipo pastoral está disponible para escucharte y acompañarte."
+            />
+            <ActivityCard
+              icon="❤️"
+              title="Vida comunitaria"
+              schedule="Actividades durante el mes"
+              description="Visitas, encuentros sociales, apoyo mutuo y servicio a la comunidad. Porque la iglesia va más allá del domingo."
+            />
+          </div>
+
+          {/* Map placeholder */}
+          <div style={{
+            marginTop: 40,
+            borderRadius: 20,
+            overflow: "hidden",
+            border: `1px solid ${COLORS.border}`,
+          }}>
+            <div style={{
+              background: `linear-gradient(135deg, ${COLORS.skyLight}, ${COLORS.greenLight})`,
+              padding: 60,
+              textAlign: "center",
+            }}>
+              <MapPinIcon />
+              <p style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 16,
+                color: COLORS.textLight,
+                margin: "12px 0 4px",
+              }}>
+                🗺️ Mapa interactivo de Google Maps
+              </p>
+              <p style={{
+                fontSize: 14,
+                color: COLORS.textLight,
+                margin: 0,
+              }}>
+                [Dirección exacta de la iglesia — Tunja, Boyacá]
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════ CONTACTO ═══════ */}
+      <section id="contacto" style={{
+        padding: isMobile ? "80px 24px" : "100px 24px",
+        background: COLORS.white,
+      }}>
+        <div style={{ maxWidth: 800, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
+            <p style={{
+              fontSize: 13,
+              fontWeight: 600,
+              color: COLORS.green,
+              letterSpacing: 1.5,
+              textTransform: "uppercase",
+              margin: "0 0 12px 0",
+            }}>Habla con nosotros</p>
+
+            <h2 style={{
+              fontFamily: "'Merriweather', serif",
+              fontSize: isMobile ? 28 : 36,
+              color: COLORS.dark,
+              margin: "0 0 16px 0",
+              lineHeight: 1.25,
+            }}>
+              Si tienes dudas, preguntas o solo quieres conversar, estamos aquí.
+            </h2>
+
+            <p style={{
+              fontSize: 16,
+              color: COLORS.textLight,
+              lineHeight: 1.7,
+              margin: 0,
+            }}>
+              No tienes que tener todo claro para escribirnos. Estamos para escucharte.
+            </p>
+          </div>
+
+          <div style={{
+            display: "flex",
+            flexDirection: isMobile ? "column" : "row",
+            gap: 24,
+          }}>
+            {/* WhatsApp card */}
+            <div style={{
+              flex: 1,
+              background: "#075E54",
+              borderRadius: 20,
+              padding: 32,
+              textAlign: "center",
+              color: COLORS.white,
+            }}>
+              <div style={{ marginBottom: 16 }}>
+                <WhatsAppIcon />
+              </div>
+              <h3 style={{
+                fontFamily: "'Merriweather', serif",
+                fontSize: 20,
+                margin: "0 0 8px 0",
+              }}>Escríbenos por WhatsApp</h3>
+              <p style={{
+                fontSize: 14,
+                opacity: 0.85,
+                margin: "0 0 24px 0",
+                lineHeight: 1.6,
+              }}>
+                La forma más rápida de contactarnos. Normalmente respondemos en pocas horas.
+              </p>
+              <button style={{
+                background: "#25D366",
+                color: COLORS.white,
+                border: "none",
+                padding: "14px 32px",
+                borderRadius: 12,
+                fontSize: 16,
+                fontWeight: 600,
+                cursor: "pointer",
+                fontFamily: "'DM Sans', sans-serif",
+              }}>
+                Abrir WhatsApp
+              </button>
+            </div>
+
+            {/* Form card */}
+            <div style={{
+              flex: 1,
+              background: COLORS.warmGray,
+              borderRadius: 20,
+              padding: 32,
+              textAlign: "center",
+            }}>
+              <div style={{ fontSize: 28, marginBottom: 16 }}>✉️</div>
+              <h3 style={{
+                fontFamily: "'Merriweather', serif",
+                fontSize: 20,
+                color: COLORS.dark,
+                margin: "0 0 8px 0",
+              }}>Envíanos un mensaje</h3>
+              <p style={{
+                fontSize: 14,
+                color: COLORS.textLight,
+                margin: "0 0 24px 0",
+                lineHeight: 1.6,
+              }}>
+                Si prefieres escribirnos con calma, usa este formulario y te responderemos pronto.
+              </p>
+              <div style={{
+                background: COLORS.white,
+                borderRadius: 12,
+                padding: 24,
+                border: `2px dashed ${COLORS.border}`,
+              }}>
+                <p style={{ fontSize: 14, color: COLORS.textLight, margin: 0 }}>
+                  📋 Formulario embebido (Typeform)
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════ FOOTER ═══════ */}
+      <footer style={{
+        padding: isMobile ? "48px 24px" : "60px 24px",
+        background: COLORS.dark,
+        color: "rgba(255,255,255,0.7)",
+      }}>
+        <div style={{
+          maxWidth: 1100,
+          margin: "0 auto",
+          display: "flex",
+          flexDirection: isMobile ? "column" : "row",
+          justifyContent: "space-between",
+          alignItems: isMobile ? "center" : "flex-start",
+          gap: 32,
+          textAlign: isMobile ? "center" : "left",
+        }}>
+          <div>
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              justifyContent: isMobile ? "center" : "flex-start",
+              marginBottom: 12,
+            }}>
+              <ChurchLogo size={24} />
+              <span style={{
+                fontFamily: "'Merriweather', serif",
+                fontWeight: 700,
+                fontSize: 16,
+                color: COLORS.white,
+              }}>Iglesia de Tunja</span>
+            </div>
+            <p style={{ fontSize: 14, lineHeight: 1.6, margin: 0, maxWidth: 320 }}>
+              Un lugar para aprender de Dios, ser cuidado y caminar en comunidad.
+            </p>
+          </div>
+
+          <div>
+            <p style={{ fontSize: 13, fontWeight: 600, color: COLORS.white, margin: "0 0 12px 0", letterSpacing: 0.5 }}>Encuéntranos</p>
+            <p style={{ fontSize: 14, margin: "0 0 6px 0" }}>📍 [Dirección], Tunja, Boyacá</p>
+            <p style={{ fontSize: 14, margin: "0 0 6px 0" }}>⏰ Domingos — [horario]</p>
+            <p style={{ fontSize: 14, margin: 0 }}>📱 WhatsApp: [número]</p>
+          </div>
+
+          <div>
+            <p style={{ fontSize: 13, fontWeight: 600, color: COLORS.white, margin: "0 0 12px 0", letterSpacing: 0.5 }}>Síguenos</p>
+            <p style={{ fontSize: 14, margin: "0 0 6px 0" }}>Facebook</p>
+            <p style={{ fontSize: 14, margin: "0 0 6px 0" }}>Instagram</p>
+          </div>
+        </div>
+
+        <div style={{
+          maxWidth: 1100,
+          margin: "40px auto 0",
+          paddingTop: 24,
+          borderTop: "1px solid rgba(255,255,255,0.1)",
+          textAlign: "center",
+          fontSize: 13,
+        }}>
+          © 2026 Iglesia de Tunja. Todos los derechos reservados.
+        </div>
+      </footer>
+
+      {/* ═══════ FLOATING WHATSAPP BUTTON ═══════ */}
+      <div style={{
+        position: "fixed",
+        bottom: 24,
+        right: 24,
+        zIndex: 999,
+      }}>
+        <button style={{
+          width: 56,
+          height: 56,
+          borderRadius: "50%",
+          background: "#25D366",
+          border: "none",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          boxShadow: "0 4px 16px rgba(37,211,102,0.4)",
+          transition: "transform 0.2s",
+        }}
+          onMouseEnter={e => e.currentTarget.style.transform = "scale(1.1)"}
+          onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
+        >
+          <WhatsAppIcon />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.render(React.createElement(App), document.getElementById("root"));
+</script>
+</body>
+</html>

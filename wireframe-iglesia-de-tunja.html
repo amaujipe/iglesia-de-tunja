@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Iglesia de Tunja — Wireframe</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #FAFAFA; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+const W = {
+  bg: "#FAFAFA", white: "#FFFFFF", black: "#333333", gray: "#999999",
+  lightGray: "#CCCCCC", veryLight: "#E8E8E8", sketch: "#666666",
+};
+
+const sketchBorder = `2px solid ${W.black}`;
+const sketchBorderLight = `1.5px solid ${W.lightGray}`;
+const sketchRadius = 3;
+
+const TextLine = ({ width = "100%", height = 10, style = {} }) => (
+  <div style={{ width, height, background: W.veryLight, borderRadius: 2, ...style }} />
+);
+
+const TextBlock = ({ lines = 3, maxWidth = "100%", gap = 8 }) => (
+  <div style={{ display: "flex", flexDirection: "column", gap, maxWidth }}>
+    {Array.from({ length: lines }).map((_, i) => (
+      <TextLine key={i} width={i === lines - 1 ? "70%" : "100%"} height={9} />
+    ))}
+  </div>
+);
+
+const ImageBox = ({ width = "100%", height = 160, label, style = {} }) => (
+  <div style={{
+    width, height, background: W.veryLight, border: sketchBorderLight, borderRadius: sketchRadius,
+    position: "relative", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", ...style,
+  }}>
+    <svg width="100%" height="100%" style={{ position: "absolute", top: 0, left: 0 }}>
+      <line x1="0" y1="0" x2="100%" y2="100%" stroke={W.lightGray} strokeWidth="1" />
+      <line x1="100%" y1="0" x2="0" y2="100%" stroke={W.lightGray} strokeWidth="1" />
+    </svg>
+    {label && (
+      <span style={{
+        position: "relative", zIndex: 1, fontFamily: "'Caveat', cursive", fontSize: 14,
+        color: W.gray, background: "rgba(250,250,250,0.85)", padding: "2px 10px", borderRadius: 4,
+      }}>{label}</span>
+    )}
+  </div>
+);
+
+const WireButton = ({ text, primary = false, style = {} }) => (
+  <div style={{
+    display: "inline-block", padding: primary ? "12px 28px" : "10px 24px",
+    border: primary ? `2px solid ${W.black}` : `1.5px solid ${W.lightGray}`, borderRadius: sketchRadius,
+    background: primary ? W.black : W.white, color: primary ? W.white : W.black,
+    fontFamily: "'Caveat', cursive", fontSize: 16, textAlign: "center", ...style,
+  }}>{text}</div>
+);
+
+const SectionAnnotation = ({ number, text }) => (
+  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+    <div style={{
+      width: 28, height: 28, borderRadius: "50%", border: `2px solid ${W.black}`,
+      display: "flex", alignItems: "center", justifyContent: "center",
+      fontFamily: "'Caveat', cursive", fontSize: 16, fontWeight: 700, color: W.black, flexShrink: 0,
+    }}>{number}</div>
+    <span style={{ fontFamily: "'Caveat', cursive", fontSize: 18, color: W.sketch, fontWeight: 700 }}>{text}</span>
+  </div>
+);
+
+const WireAccordion = ({ label, isOpen, onClick }) => (
+  <div onClick={onClick} style={{
+    padding: "14px 0", borderBottom: `1px solid ${W.veryLight}`, cursor: "pointer",
+    display: "flex", justifyContent: "space-between", alignItems: "center",
+  }}>
+    <span style={{ fontFamily: "'Caveat', cursive", fontSize: 16, color: W.black }}>{label}</span>
+    <span style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0)", transition: "transform 0.2s", fontSize: 12, color: W.gray }}>▼</span>
+  </div>
+);
+
+const WireCard = ({ children, style = {} }) => (
+  <div style={{ background: W.white, border: sketchBorderLight, borderRadius: sketchRadius, padding: 20, ...style }}>{children}</div>
+);
+
+function App() {
+  const [openFAQ, setOpenFAQ] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  const faqLabels = [
+    "¿Cómo es un servicio dominical?",
+    "¿Qué hago cuando llegue?",
+    "¿Tengo que participar en algo?",
+    "¿Puedo ir solo/a?",
+    "¿Puedo ir con niños?",
+    "¿Necesito llevar algo?",
+  ];
+
+  return (
+    <div style={{ fontFamily: "'Caveat', cursive", color: W.black, background: W.bg, minHeight: "100vh" }}>
+
+      {/* NAVBAR */}
+      <div style={{ position: "sticky", top: 0, background: W.white, borderBottom: sketchBorderLight, zIndex: 100, padding: "0 24px" }}>
+        <div style={{ maxWidth: 960, margin: "0 auto", height: 56, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <div style={{ width: 32, height: 32, border: sketchBorder, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>✝</div>
+            <span style={{ fontSize: 18, fontWeight: 700 }}>Iglesia de Tunja</span>
+          </div>
+          {!isMobile ? (
+            <div style={{ display: "flex", gap: 20 }}>
+              {["Inicio", "Tu visita", "Comunidad", "Creemos", "Reuniones", "Contacto"].map(item => (
+                <span key={item} style={{ fontSize: 15, color: W.gray, cursor: "pointer" }}>{item}</span>
+              ))}
+            </div>
+          ) : (
+            <div style={{ fontSize: 22, cursor: "pointer", color: W.black }}>☰</div>
+          )}
+        </div>
+      </div>
+
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "0 24px" }}>
+
+        {/* HERO */}
+        <section style={{ padding: isMobile ? "40px 0 50px" : "60px 0 70px" }}>
+          <SectionAnnotation number="1" text="Inicio (Hero)" />
+          <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: 32, alignItems: "center" }}>
+            <div style={{ flex: "1 1 55%" }}>
+              <div style={{ display: "inline-block", border: `1px solid ${W.lightGray}`, borderRadius: 20, padding: "4px 14px", marginBottom: 16 }}>
+                <TextLine width={140} height={8} />
+              </div>
+              <div style={{ fontFamily: "'Caveat', cursive", fontSize: isMobile ? 28 : 38, fontWeight: 700, color: W.black, lineHeight: 1.2, marginBottom: 16 }}>
+                Título principal del sitio
+              </div>
+              <TextBlock lines={3} maxWidth={420} />
+              <div style={{ display: "flex", gap: 12, marginTop: 28, flexWrap: "wrap" }}>
+                <WireButton text="Llamado a la acción" primary />
+                <WireButton text="¿Primera vez?" />
+              </div>
+            </div>
+            <div style={{ flex: "1 1 40%", width: "100%" }}>
+              <ImageBox height={isMobile ? 220 : 320} label="Foto comunidad" />
+            </div>
+          </div>
+        </section>
+
+        <div style={{ borderTop: `1px dashed ${W.lightGray}`, margin: "0 0 10px" }} />
+
+        {/* QUÉ ESPERAR */}
+        <section style={{ padding: "50px 0" }}>
+          <SectionAnnotation number="2" text="¿Qué esperar si nos visitas?" />
+          <div style={{ maxWidth: 620, margin: "0 auto" }}>
+            <div style={{ fontSize: 28, fontWeight: 700, marginBottom: 8, textAlign: "center" }}>Preguntas frecuentes</div>
+            <div style={{ display: "flex", justifyContent: "center" }}><TextBlock lines={2} maxWidth={440} /></div>
+            <div style={{ marginTop: 28 }}>
+              {faqLabels.map((label, i) => (
+                <div key={i}>
+                  <WireAccordion label={label} isOpen={openFAQ === i} onClick={() => setOpenFAQ(openFAQ === i ? -1 : i)} />
+                  {openFAQ === i && (
+                    <div style={{ padding: "10px 0 16px 8px" }}><TextBlock lines={3} maxWidth={500} gap={6} /></div>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div style={{ marginTop: 28, padding: 20, border: `1px solid ${W.lightGray}`, borderRadius: sketchRadius, background: W.white, textAlign: "center" }}>
+              <span style={{ fontSize: 16, color: W.gray, fontStyle: "italic" }}>Frase de bienvenida destacada</span>
+            </div>
+          </div>
+        </section>
+
+        <div style={{ borderTop: `1px dashed ${W.lightGray}`, margin: "0 0 10px" }} />
+
+        {/* COMUNIDAD */}
+        <section style={{ padding: "50px 0" }}>
+          <SectionAnnotation number="3" text="Nuestra comunidad" />
+          <div style={{ textAlign: "center", maxWidth: 500, margin: "0 auto 32px" }}>
+            <div style={{ fontSize: 28, fontWeight: 700, marginBottom: 10 }}>Título de comunidad</div>
+            <TextBlock lines={2} />
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr", gap: 12, marginBottom: 36 }}>
+            <ImageBox height={140} label="Foto 1" />
+            <ImageBox height={140} label="Foto 2" />
+            <ImageBox height={140} label="Foto 3" />
+          </div>
+          <div style={{ fontSize: 20, fontWeight: 700, marginBottom: 16, textAlign: "center" }}>Testimonios</div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+            {[1, 2, 3].map(i => (
+              <WireCard key={i} style={{ flex: "1 1 250px", minWidth: 220 }}>
+                <TextBlock lines={2} gap={6} />
+                <div style={{ marginTop: 12, display: "flex", alignItems: "center", gap: 8 }}>
+                  <div style={{ width: 24, height: 24, borderRadius: "50%", border: `1.5px solid ${W.lightGray}`, background: W.veryLight }} />
+                  <TextLine width={60} height={8} />
+                </div>
+              </WireCard>
+            ))}
+          </div>
+        </section>
+
+        <div style={{ borderTop: `1px dashed ${W.lightGray}`, margin: "0 0 10px" }} />
+
+        {/* LO QUE CREEMOS */}
+        <section style={{ padding: "50px 0" }}>
+          <SectionAnnotation number="4" text="Lo que creemos" />
+          <div style={{ textAlign: "center", maxWidth: 500, margin: "0 auto 32px" }}>
+            <div style={{ fontSize: 28, fontWeight: 700, marginBottom: 10 }}>Título de fe</div>
+            <TextBlock lines={2} />
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 12 }}>
+            {["Dios Padre, Hijo y Espíritu Santo", "La Biblia", "La Gracia", "La Comunidad"].map((title, i) => (
+              <WireCard key={i}>
+                <div style={{ fontSize: 17, fontWeight: 700, marginBottom: 10 }}>{title}</div>
+                <TextBlock lines={3} gap={6} />
+              </WireCard>
+            ))}
+          </div>
+        </section>
+
+        <div style={{ borderTop: `1px dashed ${W.lightGray}`, margin: "0 0 10px" }} />
+
+        {/* REUNIONES */}
+        <section style={{ padding: "50px 0" }}>
+          <SectionAnnotation number="5" text="Reuniones y actividades" />
+          <div style={{ textAlign: "center", maxWidth: 500, margin: "0 auto 32px" }}>
+            <div style={{ fontSize: 28, fontWeight: 700, marginBottom: 10 }}>Horarios y lugar</div>
+          </div>
+          <WireCard style={{ marginBottom: 16, border: sketchBorder }}>
+            <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", justifyContent: "space-between", alignItems: isMobile ? "flex-start" : "center", gap: 16 }}>
+              <div>
+                <div style={{ fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Servicio Dominical</div>
+                <TextBlock lines={2} maxWidth={360} gap={6} />
+                <div style={{ display: "flex", gap: 20, marginTop: 12 }}>
+                  <span style={{ fontSize: 14, color: W.gray }}>🕐 Horario</span>
+                  <span style={{ fontSize: 14, color: W.gray }}>📍 Dirección</span>
+                </div>
+              </div>
+              <WireButton text="Cómo llegar" primary style={{ flexShrink: 0 }} />
+            </div>
+          </WireCard>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr", gap: 12 }}>
+            {["Jóvenes y niños", "Acompañamiento pastoral", "Vida comunitaria"].map((title, i) => (
+              <WireCard key={i}>
+                <div style={{ width: 32, height: 32, borderRadius: "50%", border: sketchBorderLight, background: W.veryLight, marginBottom: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>
+                  {["👧", "🤝", "❤"][i]}
+                </div>
+                <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>{title}</div>
+                <span style={{ fontSize: 13, color: W.gray }}>Día y hora</span>
+                <div style={{ marginTop: 8 }}><TextBlock lines={2} gap={5} /></div>
+              </WireCard>
+            ))}
+          </div>
+          <div style={{ marginTop: 24 }}>
+            <ImageBox height={200} label="Mapa de Google Maps" style={{ borderRadius: sketchRadius }} />
+          </div>
+        </section>
+
+        <div style={{ borderTop: `1px dashed ${W.lightGray}`, margin: "0 0 10px" }} />
+
+        {/* CONTACTO */}
+        <section style={{ padding: "50px 0" }}>
+          <SectionAnnotation number="6" text="Habla con nosotros" />
+          <div style={{ textAlign: "center", maxWidth: 500, margin: "0 auto 32px" }}>
+            <div style={{ fontSize: 28, fontWeight: 700, marginBottom: 10 }}>Título de contacto</div>
+            <TextBlock lines={2} />
+          </div>
+          <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: 16 }}>
+            <WireCard style={{ flex: 1, textAlign: "center", background: W.black, color: W.white, border: sketchBorder }}>
+              <div style={{ fontSize: 28, marginBottom: 8 }}>💬</div>
+              <div style={{ fontSize: 20, fontWeight: 700, marginBottom: 6 }}>WhatsApp</div>
+              <div style={{ marginBottom: 16, opacity: 0.6 }}><TextBlock lines={2} gap={5} /></div>
+              <div style={{ display: "inline-block", padding: "10px 24px", border: `2px solid ${W.white}`, borderRadius: sketchRadius, fontSize: 15 }}>Abrir WhatsApp</div>
+            </WireCard>
+            <WireCard style={{ flex: 1, textAlign: "center" }}>
+              <div style={{ fontSize: 28, marginBottom: 8 }}>✉️</div>
+              <div style={{ fontSize: 20, fontWeight: 700, marginBottom: 6, color: W.black }}>Formulario</div>
+              <div style={{ marginBottom: 16 }}><TextBlock lines={2} gap={5} /></div>
+              <div style={{ padding: 24, border: `2px dashed ${W.lightGray}`, borderRadius: sketchRadius, background: W.bg }}>
+                <span style={{ fontSize: 14, color: W.gray }}>Formulario embebido</span>
+              </div>
+            </WireCard>
+          </div>
+        </section>
+
+        <div style={{ borderTop: `1px dashed ${W.lightGray}`, margin: "0 0 10px" }} />
+
+        {/* FOOTER */}
+        <section style={{ padding: "40px 0 50px" }}>
+          <SectionAnnotation number="7" text="Footer" />
+          <div style={{ background: W.black, borderRadius: sketchRadius, padding: isMobile ? 24 : 32, color: W.white }}>
+            <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", justifyContent: "space-between", gap: 24 }}>
+              <div>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                  <div style={{ width: 24, height: 24, borderRadius: "50%", border: `1.5px solid ${W.white}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10 }}>✝</div>
+                  <span style={{ fontSize: 16, fontWeight: 700 }}>Iglesia de Tunja</span>
+                </div>
+                <div style={{ opacity: 0.5 }}><TextBlock lines={2} gap={5} /></div>
+              </div>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 8 }}>Información</div>
+                <div style={{ opacity: 0.5 }}>
+                  <TextLine width={120} height={7} style={{ marginBottom: 6 }} />
+                  <TextLine width={100} height={7} style={{ marginBottom: 6 }} />
+                  <TextLine width={110} height={7} />
+                </div>
+              </div>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 8 }}>Redes</div>
+                <div style={{ opacity: 0.5 }}>
+                  <TextLine width={80} height={7} style={{ marginBottom: 6 }} />
+                  <TextLine width={70} height={7} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* FLOATING WHATSAPP */}
+      <div style={{ position: "fixed", bottom: 24, right: 24, zIndex: 999 }}>
+        <div style={{
+          width: 48, height: 48, borderRadius: "50%", background: W.black, border: `2px solid ${W.black}`,
+          display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, color: W.white,
+          boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
+        }}>💬</div>
+      </div>
+
+      {/* LEGEND */}
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "20px 24px 60px" }}>
+        <div style={{ border: `2px dashed ${W.lightGray}`, borderRadius: sketchRadius, padding: 20, background: W.white }}>
+          <div style={{ fontSize: 18, fontWeight: 700, marginBottom: 12, color: W.black }}>Leyenda del wireframe</div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 20, fontSize: 14, color: W.gray }}>
+            <span>▨ = Imagen / foto real</span>
+            <span>▬ = Texto por definir</span>
+            <span>◼ = Botón de acción</span>
+            <span>① ② ... = Secciones del sitio</span>
+            <span>💬 = Botón WhatsApp flotante (siempre visible)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.render(React.createElement(App), document.getElementById("root"));
+</script>
+</body>
+</html>
