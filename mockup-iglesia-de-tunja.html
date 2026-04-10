@@ -93,16 +93,27 @@ const CrossDecor = ({ style }) => (
 const PhotoPlaceholder = ({ label, aspect = "4/3", className = "" }) => (
   <div style={{
     aspectRatio: aspect,
-    background: `linear-gradient(135deg, ${COLORS.skyLight} 0%, ${COLORS.greenLight} 100%)`,
+    background: className === "hero" 
+      ? `linear-gradient(135deg, ${COLORS.darkMuted} 0%, ${COLORS.dark} 100%)`
+      : `linear-gradient(135deg, ${COLORS.skyLight} 0%, ${COLORS.greenLight} 100%)`,
     borderRadius: 12,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
-    border: `2px dashed ${COLORS.border}`,
-    ...( className === "hero" ? { borderRadius: 0, border: "none" } : {}),
+    border: className === "hero" 
+      ? `3px dashed ${COLORS.skyMuted}` 
+      : `2px dashed ${COLORS.border}`,
+    boxShadow: className === "hero" ? "0 24px 48px rgba(0,0,0,0.15)" : "none",
   }}>
-    <span style={{ color: COLORS.textLight, fontSize: 14, textAlign: "center", fontFamily: "'DM Sans', sans-serif" }}>
+    <span style={{ 
+      color: className === "hero" ? COLORS.white : COLORS.textLight, 
+      fontSize: className === "hero" ? 16 : 14, 
+      fontWeight: className === "hero" ? 600 : 400,
+      textAlign: "center", 
+      fontFamily: "'DM Sans', sans-serif",
+      padding: "20px"
+    }}>
       {label}
     </span>
   </div>
@@ -167,38 +178,42 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => (
   </div>
 );
 
-// Testimony card
-const TestimonyCard = ({ name, text }) => (
+// Video Testimony Placeholder
+const VideoTestimonyCard = ({ name }) => (
   <div style={{
-    background: COLORS.white,
+    background: COLORS.dark,
     borderRadius: 16,
-    padding: "28px 24px",
-    boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
+    overflow: "hidden",
+    position: "relative",
+    aspectRatio: "9/16",
+    flex: "1 1 250px",
+    minWidth: 200,
+    maxWidth: 300,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     border: `1px solid ${COLORS.border}`,
-    flex: "1 1 280px",
-    minWidth: 250,
   }}>
-    <p style={{
-      fontFamily: "'Merriweather', serif",
-      fontSize: 15,
-      lineHeight: 1.7,
-      color: COLORS.text,
-      margin: "0 0 16px 0",
-      fontStyle: "italic",
-    }}>
-      "{text}"
-    </p>
-    <span style={{
-      fontFamily: "'DM Sans', sans-serif",
-      fontSize: 13,
-      color: COLORS.sky,
-      fontWeight: 600,
-      letterSpacing: 0.3,
-    }}>
-      — {name}
-    </span>
+    <div style={{
+      position: "absolute",
+      top: 0, left: 0, right: 0, bottom: 0,
+      background: `linear-gradient(135deg, ${COLORS.skyMuted} 0%, ${COLORS.greenLight} 100%)`,
+      opacity: 0.2
+    }} />
+    <div style={{ zIndex: 1, textAlign: "center", padding: 20 }}>
+      <div style={{
+        width: 48, height: 48, borderRadius: "50%", background: COLORS.white, 
+        display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px",
+        color: COLORS.sky, fontSize: 20, cursor: "pointer"
+      }}>▶</div>
+      <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: COLORS.white, fontWeight: 600 }}>
+        Testimonio de {name}
+      </span>
+      <p style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", marginTop: 4 }}>Espacio para video</p>
+    </div>
   </div>
 );
+
 
 // Activity card
 const ActivityCard = ({ icon, title, schedule, description }) => (
@@ -291,28 +306,32 @@ function App() {
   const faqItems = [
     {
       q: "¿Cómo es un servicio dominical?",
-      a: "Empezamos con un tiempo de música y alabanza, luego hay un mensaje basado en la Biblia, y terminamos con un momento de oración. Todo dura aproximadamente una hora y media. Es un ambiente cálido y cercano.",
+      a: "El servicio es de 9:00 am a 11:00 am. Iniciamos con una breve dirección de 5 a 10 minutos (un salmo o proverbio), luego tenemos un tiempo de música y alabanza. Después oramos por los niños para que pasen a su espacio especial, y continuamos con la predicación. Al final recogemos las ofrendas (totalmente voluntarias) y hacemos una oración final.",
     },
     {
       q: "¿Qué hago cuando llegue? ¿A quién me dirijo?",
-      a: "Cuando entres, alguien del equipo de bienvenida te va a recibir con una sonrisa. Te puede acompañar a un asiento y orientarte sobre lo que va a pasar. No tienes que buscar a nadie ni saber nada de antemano.",
+      a: "Puedes llegar con toda confianza. En la puerta habrá servidores del equipo de bienvenida que te recibirán con calidez. Ellos te indicarán dónde puedes sentarte y, si no trajiste Biblia, te pueden prestar una.",
     },
     {
       q: "¿Tengo que participar en algo?",
-      a: "No. Puedes simplemente sentarte y escuchar. Nadie te va a pedir que hagas algo con lo que no te sientas cómodo. No te vamos a pedir que te presentes frente a todos ni nada parecido.",
+      a: "No. Puedes simplemente sentarte y escuchar si así lo deseas. No te vamos a pedir que pases al frente ni que te presentes en público.",
     },
     {
-      q: "¿Puedo ir solo/a?",
-      a: "Por supuesto. Muchas personas llegan solas la primera vez. Alguien del equipo de bienvenida te va a saludar y te puede acompañar a un asiento si lo deseas.",
+      q: "¿Puedo ir solo/a sin compromiso?",
+      a: "Por supuesto. Puedes ir solo a escuchar sin ningún tipo de compromiso.",
     },
     {
       q: "¿Puedo ir con niños?",
-      a: "Sí, los niños son bienvenidos. Tenemos actividades especiales para ellos durante parte del servicio, para que puedan aprender y divertirse a su nivel.",
+      a: "¡Sí! Mientras los adultos están en el servicio principal, los niños (de 0 a 14 años) tienen su propio espacio de Escuela Dominical donde reciben orientación a su manera.",
     },
     {
       q: "¿Necesito llevar algo?",
-      a: "Nada en absoluto. Si quieres traer una Biblia, genial. Si no tienes, no te preocupes. Y la ofrenda es completamente voluntaria, nunca se presiona a nadie.",
+      a: "No necesitas llevar nada más que las ganas de escuchar de Dios. Ven tal como estás.",
     },
+    {
+      q: "¿Dónde puedo estacionar si voy en carro?",
+      a: "Hay parqueadero disponible justo frente a la iglesia.",
+    }
   ];
 
   return (
@@ -481,7 +500,7 @@ function App() {
               margin: "0 0 20px 0",
               fontWeight: 700,
             }}>
-              Un lugar donde puedes aprender de Dios, sin presión, y caminar acompañado.
+              Ven y seamos familia.
             </h1>
 
             <p style={{
@@ -491,7 +510,7 @@ function App() {
               margin: "0 0 36px 0",
               maxWidth: 520,
             }}>
-              Somos una iglesia cristiana que cree en la Biblia, se preocupa por las personas y vive la fe en comunidad.
+              Somos la Iglesia de Tunja (Asambleas de Dios). Un lugar donde puedes aprender de Dios, sin presión, y caminar acompañado.
             </p>
 
             <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: 12 }}>
@@ -674,20 +693,13 @@ function App() {
           <div style={{
             display: "flex",
             flexWrap: "wrap",
+            justifyContent: "center",
             gap: 16,
           }}>
-            <TestimonyCard
-              name="María"
-              text="Llegué sin conocer a nadie y hoy tengo una familia aquí."
-            />
-            <TestimonyCard
-              name="Carlos"
-              text="Pensé que me iban a juzgar, pero encontré exactamente lo contrario."
-            />
-            <TestimonyCard
-              name="Andrea"
-              text="Mis hijos esperan con emoción cada domingo. Eso dice mucho."
-            />
+            <VideoTestimonyCard name="Miembro 1" />
+            <VideoTestimonyCard name="Miembro 2" />
+            <VideoTestimonyCard name="Miembro 3" />
+            <VideoTestimonyCard name="Miembro 4" />
           </div>
         </div>
       </section>
@@ -747,7 +759,7 @@ function App() {
             <BeliefCard
               accent={COLORS.sky}
               title="La Comunidad"
-              text="Creemos que la fe se vive mejor acompañados. No fuimos diseñados para caminar solos, sino para cuidarnos, apoyarnos y crecer juntos."
+              text="Creemos que la fe se vive mejor acompañados. Nuestra visión es extender el Reino de Dios a nuestras generaciones, cuidándonos y creciendo juntos como familia."
             />
           </div>
         </div>
@@ -813,11 +825,11 @@ function App() {
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 16 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, color: COLORS.sky }}>
                     <ClockIcon />
-                    <span style={{ fontSize: 14, fontWeight: 600 }}>Domingos — [horario]</span>
+                    <span style={{ fontSize: 14, fontWeight: 600 }}>Domingos — 9:00 am a 11:00 am</span>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, color: COLORS.green }}>
                     <MapPinIcon />
-                    <span style={{ fontSize: 14, fontWeight: 600 }}>Tunja, Boyacá</span>
+                    <span style={{ fontSize: 14, fontWeight: 600 }}>Cra 13 # 53-60 B. Villa Toledo</span>
                   </div>
                 </div>
               </div>
@@ -847,20 +859,20 @@ function App() {
             <ActivityCard
               icon="👧🏻"
               title="Jóvenes y niños"
-              schedule="[Día y hora]"
-              description="Actividades diseñadas para que los más jóvenes aprendan, se diviertan y crezcan en su fe junto a otros de su edad."
+              schedule="Domingos 9:00 am (Niños) | Sábados 4:00 pm (Jóvenes)"
+              description="Los niños tienen su escuela dominical simultánea al servicio. Los jóvenes (15+ años) se reúnen los sábados en la tarde."
             />
             <ActivityCard
               icon="🤝"
               title="Acompañamiento pastoral"
-              schedule="Agenda una conversación"
-              description="Si necesitas hablar con alguien, nuestro equipo pastoral está disponible para escucharte y acompañarte."
+              schedule="Totalmente gratuito"
+              description="Si necesitas consejería o hablar con alguien, el pastor o los líderes están disponibles. Solo escríbenos para agendar un espacio."
             />
             <ActivityCard
               icon="❤️"
-              title="Vida comunitaria"
-              schedule="Actividades durante el mes"
-              description="Visitas, encuentros sociales, apoyo mutuo y servicio a la comunidad. Porque la iglesia va más allá del domingo."
+              title="Canasta de amor y Misiones"
+              schedule="Actividades constantes"
+              description="Visitamos familias, entregamos mercados, repartimos Biblias y hacemos obra social en la ciudad para ayudar a quienes más lo necesitan."
             />
           </div>
 
@@ -890,7 +902,7 @@ function App() {
                 color: COLORS.textLight,
                 margin: 0,
               }}>
-                [Dirección exacta de la iglesia — Tunja, Boyacá]
+                Cra 13 # 53-60 B. Villa Toledo. Vía Arcabuco, Tunja, Boyacá
               </p>
             </div>
           </div>
@@ -961,7 +973,7 @@ function App() {
                 margin: "0 0 24px 0",
                 lineHeight: 1.6,
               }}>
-                La forma más rápida de contactarnos. Normalmente respondemos en pocas horas.
+                La forma más rápida de contactarnos. Normalmente respondemos en 24 horas.
               </p>
               <button style={{
                 background: "#25D366",
@@ -999,7 +1011,7 @@ function App() {
                 margin: "0 0 24px 0",
                 lineHeight: 1.6,
               }}>
-                Si prefieres escribirnos con calma, usa este formulario y te responderemos pronto.
+                Si quieres conocer de Dios, no tienes un lugar donde congregarte y quieres sentirte en familia, escríbenos. Trataremos de ayudarte y acompañarte.
               </p>
               <div style={{
                 background: COLORS.white,
@@ -1055,9 +1067,9 @@ function App() {
 
           <div>
             <p style={{ fontSize: 13, fontWeight: 600, color: COLORS.white, margin: "0 0 12px 0", letterSpacing: 0.5 }}>Encuéntranos</p>
-            <p style={{ fontSize: 14, margin: "0 0 6px 0" }}>📍 [Dirección], Tunja, Boyacá</p>
-            <p style={{ fontSize: 14, margin: "0 0 6px 0" }}>⏰ Domingos — [horario]</p>
-            <p style={{ fontSize: 14, margin: 0 }}>📱 WhatsApp: [número]</p>
+            <p style={{ fontSize: 14, margin: "0 0 6px 0" }}>📍 Cra 13 # 53-60 B. Villa Toledo, Tunja</p>
+            <p style={{ fontSize: 14, margin: "0 0 6px 0" }}>⏰ Domingos — 9:00 am a 11:00 am</p>
+            <p style={{ fontSize: 14, margin: 0 }}>📱 WhatsApp: +57 322 784 1842</p>
           </div>
 
           <div>
